@@ -18,6 +18,15 @@ if (navToggle && navMenu) {
       navToggle.setAttribute("aria-label", "Open navigation menu");
     }
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && navMenu.classList.contains("open")) {
+      navMenu.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation menu");
+      navToggle.focus();
+    }
+  });
 }
 
 document.querySelectorAll(".project-toggle").forEach((button) => {
@@ -48,26 +57,19 @@ if ("IntersectionObserver" in window) {
   sections.forEach((section) => sectionObserver.observe(section));
 }
 
-const contactForm = document.getElementById("contact-form");
+const lightbox = document.getElementById("evidence-lightbox");
+const lightboxTitle = document.getElementById("lightbox-title");
+const lightboxCaption = document.getElementById("lightbox-caption");
 
-contactForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const feedback = contactForm.querySelector(".form-feedback");
+document.querySelectorAll(".preview-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    lightboxTitle.textContent = button.dataset.preview || "[ADD ACTUAL EVIDENCE]";
+    lightboxCaption.textContent = button.dataset.caption || "Replace this placeholder with real project evidence.";
+    lightbox?.showModal();
+  });
+});
 
-  if (!contactForm.checkValidity()) {
-    feedback.textContent = "Please complete your name, valid email, and message.";
-    contactForm.reportValidity();
-    return;
-  }
-
-  const formData = new FormData(contactForm);
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const company = formData.get("company") || "Not provided";
-  const message = formData.get("message");
-  const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\n${message}`);
-
-  feedback.textContent = "Opening your email application…";
-  window.location.href = `mailto:emmanuel@example.com?subject=${subject}&body=${body}`;
+lightbox?.querySelector(".lightbox-close")?.addEventListener("click", () => lightbox.close());
+lightbox?.addEventListener("click", (event) => {
+  if (event.target === lightbox) lightbox.close();
 });
