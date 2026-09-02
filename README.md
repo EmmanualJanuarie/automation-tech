@@ -1,8 +1,6 @@
-# Emmanual Januarie — Automation & Controls Portfolio
+# Emmanual Januarie — Industrial Automation & Controls Portfolio
 
-A lightweight, single-page industrial automation portfolio built with semantic HTML, modern CSS, and vanilla JavaScript.
-
-The content is intentionally concise and recruiter-focused: professional profile, junior-level technical knowledge, four training projects, evidence and test placeholders, troubleshooting, background, CV, and contact details.
+A lightweight, single-page portfolio for junior automation, controls, instrumentation, PLC, and SCADA technician opportunities. Built with semantic HTML, modern CSS, and vanilla JavaScript only.
 
 ## Run locally
 
@@ -10,12 +8,23 @@ Open `index.html` directly in a browser, or serve the `portfolio` directory with
 
 ## Personalise before publishing
 
-- Replace every clearly marked `[PLACEHOLDER]` in `index.html` with verified personal information or genuine project evidence.
-- Update the email, GitHub, LinkedIn, location, availability, institution, company, role, and date placeholders.
-- Replace the dummy project-image panels with genuine screenshots, diagrams, documents, or prototype photos.
+- Replace every clearly marked `[PLACEHOLDER]` in `index.html` with verified personal information or real project evidence.
+- Update the email recipient in `js/script.js`, then replace the email, GitHub, LinkedIn, institution, company, responsibility, and date placeholders.
+- Add only genuine project evidence and controlled documents under `assets/`.
 - Replace `assets/Emmanuel-CV.pdf` with the current CV, or update both CV links if the filename changes.
 - Change project technology labels from `Studied` or `Planned` to `Implemented` or `Tested` only when supporting evidence exists.
-- Set the Open Graph and Twitter image paths to absolute URLs after choosing the final domain.
+
+## Portfolio sections
+
+1. Hero
+2. About
+3. Technical Skills
+4. Industrial Projects
+5. Fault-finding & Troubleshooting
+6. Technical Documentation
+7. Experience & Education
+8. CV
+9. Contact
 
 ## Structure
 

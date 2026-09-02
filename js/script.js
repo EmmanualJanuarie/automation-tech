@@ -3,49 +3,98 @@
 const navToggle = document.querySelector(".nav-toggle");
 const navMenu = document.querySelector(".nav-menu");
 
-function closeNavigation() {
-  if (!navToggle || !navMenu) return;
-  navMenu.classList.remove("open");
-  navToggle.setAttribute("aria-expanded", "false");
-  navToggle.setAttribute("aria-label", "Open navigation menu");
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+    navToggle.setAttribute("aria-expanded", String(!isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Open navigation menu" : "Close navigation menu");
+    navMenu.classList.toggle("open", !isOpen);
+  });
+
+  navMenu.addEventListener("click", (event) => {
+    if (event.target.matches("a")) {
+      navMenu.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation menu");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && navMenu.classList.contains("open")) {
+      navMenu.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation menu");
+      navToggle.focus();
+    }
+  });
 }
 
-navToggle?.addEventListener("click", () => {
-  const willOpen = navToggle.getAttribute("aria-expanded") !== "true";
-  navToggle.setAttribute("aria-expanded", String(willOpen));
-  navToggle.setAttribute("aria-label", willOpen ? "Close navigation menu" : "Open navigation menu");
-  navMenu?.classList.toggle("open", willOpen);
-});
-
-navMenu?.addEventListener("click", (event) => {
-  if (event.target.closest("a")) closeNavigation();
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && navMenu?.classList.contains("open")) {
-    closeNavigation();
-    navToggle?.focus();
-  }
+document.querySelectorAll(".project-toggle").forEach((button) => {
+  button.addEventListener("click", () => {
+    const details = document.getElementById(button.getAttribute("aria-controls"));
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!isOpen));
+    button.innerHTML = isOpen
+      ? 'View details <span aria-hidden="true">+</span>'
+      : 'Hide details <span aria-hidden="true">−</span>';
+    details?.classList.toggle("open", !isOpen);
+  });
 });
 
 const sections = [...document.querySelectorAll("main section[id]")];
 const navLinks = [...document.querySelectorAll(".nav-menu a")];
 
 if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries.find((entry) => entry.isIntersecting);
-    if (!visible) return;
-
-    navLinks.forEach((link) => {
-      const isCurrent = link.getAttribute("href") === `#${visible.target.id}`;
-      link.classList.toggle("active", isCurrent);
-      if (isCurrent) link.setAttribute("aria-current", "page");
-      else link.removeAttribute("aria-current");
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+      });
     });
-  }, { rootMargin: "-28% 0px -64%", threshold: 0 });
+  }, { rootMargin: "-25% 0px -65%", threshold: 0 });
 
-  sections.forEach((section) => observer.observe(section));
+  sections.forEach((section) => sectionObserver.observe(section));
 }
 
-const year = document.getElementById("year");
-if (year) year.textContent = String(new Date().getFullYear());
+const contactForm = document.getElementById("contact-form");
+
+contactForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const feedback = contactForm.querySelector(".form-feedback");
+  if (!contactForm.checkValidity()) {
+    contactForm.reportValidity();
+    if (feedback) feedback.textContent = "Please complete the required fields.";
+    return;
+  }
+
+  const formData = new FormData(contactForm);
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const company = formData.get("company") || "Not provided";
+  const message = formData.get("message");
+  const recipient = "your-email@example.com"; // Replace with Emmanual's real email address.
+  const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\n${message}`);
+
+  if (feedback) feedback.textContent = "Opening your email application…";
+  window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+});
+
+const lightbox = document.getElementById("evidence-lightbox");
+const lightboxTitle = document.getElementById("lightbox-title");
+const lightboxCaption = document.getElementById("lightbox-caption");
+
+document.querySelectorAll(".preview-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    lightboxTitle.textContent = button.dataset.preview || "[ADD ACTUAL EVIDENCE]";
+    lightboxCaption.textContent = button.dataset.caption || "Replace this placeholder with real project evidence.";
+    lightbox?.showModal();
+  });
+});
+
+lightbox?.querySelector(".lightbox-close")?.addEventListener("click", () => lightbox.close());
+lightbox?.addEventListener("click", (event) => {
+  if (event.target === lightbox) lightbox.close();
+});
