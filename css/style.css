@@ -109,17 +109,6 @@ h1 span { display: block; margin-bottom: 17px; color: var(--muted); font: 500 cl
 .bridge-grid p { margin: 0; color: var(--faint); font-size: .8rem; }
 
 .skills { background-image: linear-gradient(90deg, transparent calc(50% - 1px), rgba(32,56,72,.2) 50%, transparent calc(50% + 1px)); }
-.level-legend { display: flex; flex-wrap: wrap; justify-content: end; gap: 14px; color: var(--muted); font: .58rem "IBM Plex Mono", monospace; }
-.level-legend span { display: flex; align-items: center; gap: 6px; }
-.level-legend i { width: 9px; height: 9px; }
-.level-fundamental { background: var(--line-bright); }
-.level-working { background: var(--amber); }
-.level-developing { background: var(--cyan); }
-.claim-key { display: grid; grid-template-columns: repeat(6, 1fr); margin: -16px 0 22px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-.claim-key > div { padding: 11px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.claim-key b, .claim-key span { display: block; }
-.claim-key b { color: var(--cyan); font: 500 .56rem "IBM Plex Mono", monospace; text-transform: uppercase; }
-.claim-key span { margin-top: 4px; color: var(--faint); font-size: .62rem; }
 .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .skill-card { min-width: 0; padding: 21px; background: var(--surface); border: 1px solid var(--line); }
 .skill-card:hover { border-color: var(--line-bright); }
@@ -204,10 +193,6 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
 .architecture i { color: var(--faint); font: normal .48rem "IBM Plex Mono", monospace; }
 
 .troubleshooting { background: linear-gradient(rgba(7,17,27,.96), rgba(7,17,27,.96)), linear-gradient(90deg, var(--line) 1px, transparent 1px), linear-gradient(var(--line) 1px, transparent 1px); background-size: auto, 48px 48px, 48px 48px; }
-.diagnostic-path { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding: 18px; border: 1px solid var(--line-bright); background: var(--surface); }
-.diagnostic-path span { padding: 7px 11px; border: 1px solid var(--line); color: var(--ink); font: 500 .62rem "IBM Plex Mono", monospace; text-transform: uppercase; }
-.diagnostic-path i { color: var(--amber); font-style: normal; }
-.report-header { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 12px; padding: 12px 15px; border: 1px solid var(--line); color: var(--faint); font: .55rem "IBM Plex Mono", monospace; }
 .fault-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .fault-card { background: var(--surface); border: 1px solid var(--line); }
 .fault-head { display: grid; grid-template-columns: 50px 1fr auto; align-items: center; gap: 12px; padding: 15px; border-bottom: 1px solid var(--line); }
@@ -222,10 +207,20 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
 .fault-card dd { margin: 0; border-left: 1px solid rgba(32,56,72,.58); color: var(--muted); font-size: .68rem; }
 .fault-card dl > div:last-child dd { color: var(--amber); }
 .fault-evidence { margin: 0; padding: 12px 15px; border-top: 1px solid var(--line); color: var(--amber); font: .55rem/1.5 "IBM Plex Mono", monospace; overflow-wrap: anywhere; }
-.safety-note { margin: 16px 0 0; padding: 16px; border-left: 2px solid var(--amber); background: rgba(229,183,92,.05); color: var(--muted); font-size: .74rem; }
-.safety-note strong { color: var(--amber); }
 
 .documentation { background: var(--bg-deep); }
+.documentation-tabs { display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 18px; border: 1px solid var(--line-bright); background: var(--bg); }
+.documentation-tabs button { min-width: 0; padding: 16px 17px; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; text-align: left; font: 600 .72rem "IBM Plex Sans", sans-serif; }
+.documentation-tabs button:last-child { border-right: 0; }
+.documentation-tabs button span { display: block; margin-bottom: 6px; color: var(--faint); font: 500 .52rem "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+.documentation-tabs button:hover { background: rgba(78,211,230,.04); color: var(--ink); }
+.documentation-tabs button[aria-selected="true"] { background: rgba(78,211,230,.08); box-shadow: inset 0 -2px var(--cyan); color: var(--ink); }
+.documentation-tabs button[aria-selected="true"] span { color: var(--cyan); }
+.documentation-tabs button:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--cyan); outline-offset: -3px; }
+.documentation-panel[hidden] { display: none; }
+.documentation-panel { animation: document-panel-in .2s ease-out; }
+.documentation-panel::before { content: attr(data-project-name); display: block; margin-bottom: 12px; color: var(--amber); font: 500 .6rem "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; }
+@keyframes document-panel-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 .document-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .document-grid article { min-height: 190px; display: grid; grid-template-rows: auto 1fr auto; padding: 19px; border: 1px solid var(--line); background: var(--surface); }
 .document-grid article > span { color: var(--cyan); font: 500 .56rem "IBM Plex Mono", monospace; }
@@ -233,6 +228,7 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
 .document-grid p { margin: 0; color: var(--faint); font-size: .72rem; }
 .document-grid small { display: block; margin-top: 12px; color: var(--amber); font: .52rem/1.6 "IBM Plex Mono", monospace; }
 .document-grid .preview-button { align-self: end; width: 100%; margin-top: 18px; text-align: left; }
+.documentation-noscript { padding: 15px; border: 1px solid var(--line); color: var(--amber); font: .65rem "IBM Plex Mono", monospace; }
 
 .timeline { position: relative; max-width: 990px; margin-left: auto; }
 .timeline::before { content: ""; position: absolute; left: 45px; top: 0; bottom: 0; width: 1px; background: var(--line-bright); }
@@ -330,15 +326,16 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
   .section-heading { margin-bottom: 32px; }
   .heading-row { align-items: start; flex-direction: column; }
   .heading-note { text-align: left; }
-  .level-legend { justify-content: start; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .project-summary { grid-template-columns: 46px 1fr; }
   .project-toggle { grid-column: 2; justify-self: start; }
   .architecture { grid-template-columns: 1fr; }
   .architecture > span { transform: rotate(90deg); height: 34px; justify-content: center; }
   .fault-grid { grid-template-columns: 1fr; }
+  .documentation-tabs { grid-template-columns: repeat(2, 1fr); }
+  .documentation-tabs button:nth-child(2) { border-right: 0; }
+  .documentation-tabs button:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
   .document-grid { grid-template-columns: repeat(2, 1fr); }
-  .claim-key { grid-template-columns: repeat(3, 1fr); }
   .evidence-gallery, .compact-evidence ul { grid-template-columns: repeat(2, 1fr); }
   .evidence-gallery article:nth-child(3n) { border-right: 1px solid var(--line); }
   .evidence-gallery article:nth-child(2n) { border-right: 0; }
@@ -353,7 +350,6 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
   .process-mini { grid-template-columns: 52px 1fr 66px 1fr 52px; padding-inline: 12px; }
   .section:not(.hero) { padding: 64px 0; }
   .bridge-grid, .skills-grid, .project-matrix, .document-grid, .evidence-gallery, .compact-evidence ul { grid-template-columns: 1fr; }
-  .claim-key { grid-template-columns: repeat(2, 1fr); }
   .featured-skill { grid-column: auto; }
   .project-summary { grid-template-columns: 1fr; padding: 20px; }
   .project-toggle { grid-column: 1; }
@@ -362,7 +358,6 @@ td:first-child, td:nth-child(2), td:nth-child(3) { font-family: "IBM Plex Mono",
   .evidence-gallery article, .evidence-gallery article:nth-child(2n), .evidence-gallery article:nth-child(3n) { border-right: 0; }
   .project-footer { align-items: start; flex-direction: column; }
   .project-footer > div { flex-wrap: wrap; }
-  .report-header { align-items: flex-start; flex-direction: column; }
   .fault-head { grid-template-columns: 43px 1fr; }
   .fault-head b { grid-column: 2; justify-self: start; }
   .fault-card dl > div { grid-template-columns: 86px 1fr; }
