@@ -35,9 +35,7 @@
         <li><a class="active" href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#troubleshooting">Troubleshooting</a></li>
-        <li><a href="#documentation">Documentation</a></li>
+        <li><a href="#projects">Project Work</a></li>
         <li><a href="#experience">Education &amp; Experience</a></li>
         <li><a href="#cv">CV</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -136,7 +134,37 @@
       </div>
     </section>
 
-    <section class="section projects" id="projects" aria-labelledby="projects-title">
+    <section class="section projects project-work" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-heading heading-row"><div><p class="section-code">04 / PROJECT WORK</p><h2 id="projects-title">Projects, evidence &amp; technical records</h2></div><p class="heading-note">Four training and simulation projects<br><span>Open a project to review its complete technical record</span></p></div>
+
+        <div class="project-index" aria-label="Project work overview">
+          <span>01 Conveyor</span><span>02 Tank</span><span>03 SCADA</span><span>04 Water treatment</span>
+        </div>
+
+        <article class="project-work-card" data-project-work data-project-name="Automated Conveyor System">
+          <div class="project-summary"><div class="project-number">01</div><div><div class="project-labels"><span>PLC LOGIC</span><span>TRAINING SIMULATION</span></div><h3>Automated Conveyor System</h3><p>Motor and product-flow control using discrete I/O, operating modes, sequencing, interlocks, counting, and controlled fault response.</p></div><button class="project-toggle" type="button" aria-expanded="true" aria-controls="work-conveyor">Hide project <span aria-hidden="true">−</span></button></div>
+          <div class="project-details open" id="work-conveyor"><div class="project-description"><span>Project description</span><p>An operator starts the conveyor when all permissives are healthy. A field sensor detects and counts products while the PLC supervises motor feedback, overload state, emergency-stop health, operating mode, fault latching, and restart prevention.</p></div><div data-project-content></div></div>
+        </article>
+
+        <article class="project-work-card" data-project-work data-project-name="Automated Tank / Filling System">
+          <div class="project-summary"><div class="project-number">02</div><div><div class="project-labels"><span>PROCESS CONTROL</span><span>TRAINING SIMULATION</span></div><h3>Automated Tank / Filling System</h3><p>A batch-style tank process using analog values, pump and valve control, alarm thresholds, interlocks, and operator modes.</p></div><button class="project-toggle" type="button" aria-expanded="false" aria-controls="work-tank">View project <span aria-hidden="true">+</span></button></div>
+          <div class="project-details" id="work-tank"><div class="project-description"><span>Project description</span><p>The system fills, monitors, and drains a process tank while protecting against overflow and pump dry running. Simulated level, pressure, temperature, and flow signals support scaling, alarm, permissive, and shutdown exercises.</p></div><div data-project-content></div></div>
+        </article>
+
+        <article class="project-work-card" data-project-work data-project-name="SCADA / HMI Process">
+          <div class="project-summary"><div class="project-number">03</div><div><div class="project-labels"><span>SCADA / NETWORKING</span><span>TRAINING SIMULATION</span></div><h3>SCADA / HMI Process</h3><p>A control-system architecture connecting PLC tags to HMI/SCADA visualization, alarms, trends, controls, and communications diagnostics.</p></div><button class="project-toggle" type="button" aria-expanded="false" aria-controls="work-scada">View project <span aria-hidden="true">+</span></button></div>
+          <div class="project-details" id="work-scada"><div class="project-description"><span>Project description</span><p>The PLC owns safety logic, permissives, and command validation while the HMI/SCADA layer provides process visibility, alarm acknowledgement, trending, mode requests, data-quality indication, and loss-of-communications awareness.</p></div><div data-project-content></div></div>
+        </article>
+
+        <article class="project-work-card flagship" data-project-work data-project-name="Automated Water Treatment Plant">
+          <div class="project-summary"><div class="project-number">04</div><div><div class="project-labels"><span>FLAGSHIP</span><span>IN DEVELOPMENT</span></div><h3>Automated Water Treatment Plant</h3><p>A raw-water intake, treatment, filtration, storage, and output simulation combining PLC control, instrumentation, SCADA, networking, and safety logic.</p></div><button class="project-toggle" type="button" aria-expanded="false" aria-controls="work-water">View project <span aria-hidden="true">+</span></button></div>
+          <div class="project-details" id="work-water"><div class="project-description"><span>Project description</span><p>Raw water moves through pumping, treatment, filtration, and storage before controlled discharge. The project brings sequencing, analog instrumentation, interlocks, alarm handling, operator control, documentation, and diagnostic thinking into one traceable system.</p></div><div data-project-content></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section projects" id="legacy-projects" hidden aria-hidden="true">
       <div class="container">
         <div class="section-heading heading-row"><div><p class="section-code">04 / MISSION LOG</p><h2 id="projects-title">Industrial automation projects</h2></div><p class="heading-note">Personal training and simulation work<br><span>Evidence links are placeholders until uploaded</span></p></div>
 
@@ -214,7 +242,7 @@
       </div>
     </section>
 
-    <section class="section troubleshooting" id="troubleshooting" aria-labelledby="troubleshooting-title">
+    <section class="section troubleshooting" id="legacy-troubleshooting" hidden aria-hidden="true">
       <div class="container">
         <div class="section-heading heading-row"><div><p class="section-code">05 / FAULT TELEMETRY</p><h2 id="troubleshooting-title">Fault-finding &amp; troubleshooting</h2></div><p class="heading-note">Simulated maintenance reports<br><span>Evidence-first, safe-state thinking</span></p></div>
         <div class="fault-grid">
@@ -232,7 +260,7 @@
       </div>
     </section>
 
-    <section class="section documentation" id="documentation" aria-labelledby="documentation-title">
+    <section class="section documentation" id="legacy-documentation" hidden aria-hidden="true">
       <div class="container">
         <div class="section-heading heading-row"><div><p class="section-code">06 / TECHNICAL ARCHIVE</p><h2 id="documentation-title">Technical documentation</h2></div><p class="heading-note">Organised by training project<br><span>Replace each placeholder with its PDF or GitHub file</span></p></div>
         <div class="documentation-tabs" role="tablist" aria-label="Select project documentation">
@@ -260,27 +288,11 @@
     </section>
 
     <section class="section cv-section" id="cv" aria-labelledby="cv-title">
-      <div class="container cv-layout"><div><p class="section-code">08 / FLIGHT FILE</p><h2 id="cv-title">Download My CV</h2><p>I am targeting junior and trainee opportunities where I can develop practical industrial automation competence under experienced supervision.</p><a class="button button-primary" href="assets/Emmanuel-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a><p class="file-note">assets/Emmanuel-CV.pdf · Replace the placeholder PDF with your current CV before publishing</p></div><div class="roles-panel"><p>TARGET ROLES</p><ul><li>Junior Automation Technician</li><li>Junior Controls Technician</li><li>Junior Instrumentation Technician</li><li>PLC / Controls Technician</li><li>SCADA Technician</li><li>Automation Technician Trainee</li><li>Control Systems Technician</li></ul></div></div>
+      <div class="container cv-layout"><div><p class="section-code">08 / FLIGHT FILE</p><h2 id="cv-title">Download My CV</h2><p>My CV brings together my systems-development background and the practical automation, controls, instrumentation, and SCADA skills I am building through structured project work.</p><a class="button button-primary" href="assets/Emmanuel-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a><p class="file-note">PDF · Emmanuel Januarie curriculum vitae</p></div><figure class="cv-visual"><img src="assets/images/social-preview.png" alt="Emmanuel Januarie automation and controls portfolio graphic"><figcaption>PLC · Instrumentation · SCADA/HMI</figcaption></figure></div>
     </section>
 
     <section class="section contact" id="contact" aria-labelledby="contact-title">
-      <div class="container contact-layout">
-        <div><p class="section-code">09 / OPEN CHANNEL</p><h2 id="contact-title">Let’s discuss a junior or trainee opportunity.</h2><p class="lead">I am interested in teams where I can learn safely, contribute reliably, and develop practical field competence in automation, controls, instrumentation, SCADA, and industrial systems.</p><div class="contact-panel"><dl class="contact-list"><div><dt>Email</dt><dd><a href="mailto:your-email@example.com">[YOUR EMAIL]</a></dd></div><div><dt>LinkedIn</dt><dd><a class="placeholder-link" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noreferrer">[YOUR LINKEDIN URL]</a></dd></div><div><dt>GitHub</dt><dd><a class="placeholder-link" href="https://github.com/your-username" target="_blank" rel="noreferrer">[YOUR GITHUB URL]</a></dd></div><div><dt>Location</dt><dd>South Africa</dd></div><div><dt>International availability</dt><dd>Open to International Opportunities</dd></div></dl></div></div>
-        <form class="contact-form" id="contact-form">
-          <div class="form-status"><span>CONTACT REQUEST</span><span>EMAIL MODE</span></div>
-          <label for="name">Your name</label>
-          <input id="name" name="name" type="text" autocomplete="name" required>
-          <label for="email">Your email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
-          <label for="company">Company <span>(optional)</span></label>
-          <input id="company" name="company" type="text" autocomplete="organization">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-          <button class="button button-primary" type="submit">Prepare email <span aria-hidden="true">→</span></button>
-          <p class="form-note">No information is stored. This opens your email application. Replace the placeholder recipient in <code>js/script.js</code> before publishing.</p>
-          <p class="form-feedback" aria-live="polite"></p>
-        </form>
-      </div>
+      <div class="container contact-layout"><div><p class="section-code">09 / OPEN CHANNEL</p><h2 id="contact-title">Let’s discuss a junior or trainee opportunity.</h2><p class="lead">I am interested in teams where I can learn safely, contribute reliably, and develop practical field competence in automation, controls, instrumentation, SCADA, and industrial systems.</p></div><div class="contact-panel"><dl class="contact-list"><div><dt>Email</dt><dd><a href="mailto:your-email@example.com">[YOUR EMAIL]</a></dd></div><div><dt>LinkedIn</dt><dd><a class="placeholder-link" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noreferrer">[YOUR LINKEDIN URL]</a></dd></div><div><dt>GitHub</dt><dd><a class="placeholder-link" href="https://github.com/your-username" target="_blank" rel="noreferrer">[YOUR GITHUB URL]</a></dd></div><div><dt>Location</dt><dd>South Africa</dd></div><div><dt>International availability</dt><dd>Open to International Opportunities</dd></div></dl></div></div>
     </section>
   </main>
 
