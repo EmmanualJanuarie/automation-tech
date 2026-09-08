@@ -9,7 +9,7 @@ Open `index.html` directly in a browser, or serve the `portfolio` directory with
 ## Personalise before publishing
 
 - Replace every clearly marked `[PLACEHOLDER]` in `index.html` with verified personal information or real project evidence.
-- Update the email recipient in `js/script.js`, then replace the email, GitHub, LinkedIn, institution, company, responsibility, and date placeholders.
+- Replace the email, GitHub, LinkedIn, institution, company, responsibility, and date placeholders.
 - Add only genuine project evidence and controlled documents under `assets/`.
 - Replace `assets/Emmanuel-CV.pdf` with the current CV, or update both CV links if the filename changes.
 - Change project technology labels from `Studied` or `Planned` to `Implemented` or `Tested` only when supporting evidence exists.
@@ -19,12 +19,9 @@ Open `index.html` directly in a browser, or serve the `portfolio` directory with
 1. Hero
 2. About
 3. Technical Skills
-4. Industrial Projects
-5. Fault-finding & Troubleshooting
-6. Technical Documentation
-7. Experience & Education
-8. CV
-9. Contact
+4. Project Case Studies (evidence, testing, troubleshooting, documentation)
+5. Experience & Education
+6. Contact
 
 ## Structure
 

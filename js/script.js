@@ -57,34 +57,8 @@ if ("IntersectionObserver" in window) {
   sections.forEach((section) => sectionObserver.observe(section));
 }
 
-const contactForm = document.getElementById("contact-form");
-
-contactForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const feedback = contactForm.querySelector(".form-feedback");
-  if (!contactForm.checkValidity()) {
-    contactForm.reportValidity();
-    if (feedback) feedback.textContent = "Please complete the required fields.";
-    return;
-  }
-
-  const formData = new FormData(contactForm);
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const company = formData.get("company") || "Not provided";
-  const message = formData.get("message");
-  const recipient = "your-email@example.com"; // Replace with Emmanual's real email address.
-  const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\n\n${message}`);
-
-  if (feedback) feedback.textContent = "Opening your email application…";
-  window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
-});
-
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Each project uses the same controlled-document set so files can be replaced independently.
 const documentationTypes = [
   { code: "PID", title: "P&ID", purpose: "Process and instrumentation representation.", placeholder: "[ADD P&ID PDF]", caption: "P&ID — process equipment, piping, instruments, and control relationships." },
   { code: "I/O", title: "I/O List", purpose: "Maps field devices to PLC inputs and outputs.", placeholder: "[ADD I/O LIST]", caption: "I/O list — signals, addresses, tags, ranges, and descriptions." },
@@ -101,78 +75,129 @@ const documentationTypes = [
   { code: "CHG", title: "Change Log", purpose: "Tracks revision, reason, author, date, and approval.", placeholder: "[ADD CHANGE LOG]", caption: "Change log — controlled history of technical updates." }
 ];
 
-document.querySelectorAll("[data-doc-panel]").forEach((panel) => {
-  const grid = panel.querySelector(".document-grid");
-  const projectName = panel.dataset.projectName;
+const evidenceTypes = [
+  { code: "PROCESS", title: "Add process diagram", note: "Process flow, equipment tags and system boundaries." },
+  { code: "PLC", title: "Add PLC screenshot", note: "Program logic, sequencing, permissives and interlocks." },
+  { code: "HMI / SCADA", title: "Add HMI screenshot", note: "Operator view, process values, alarms and equipment states." },
+  { code: "INSTRUMENTATION", title: "Add instrument configuration / simulation screenshot", note: "Signal range, scaling, units and validation points." },
+  { code: "ELECTRICAL", title: "Add electrical schematic", note: "Power, protection, control and field connections." }
+];
 
-  documentationTypes.forEach((documentType) => {
-    const card = document.createElement("article");
-    const code = document.createElement("span");
-    const details = document.createElement("div");
-    const title = document.createElement("h3");
-    const purpose = document.createElement("p");
-    const meta = document.createElement("small");
-    const button = document.createElement("button");
+const projectProfiles = {
+  "project-conveyor": {
+    name: "Automated Conveyor System",
+    description: "A discrete-control training project for safe conveyor operation, product detection and counting. The design covers Start/Stop priority, operating modes, motor interlocks, feedback monitoring and controlled fault recovery.",
+    tests: [
+      ["CV-T01", "Start with all permissives healthy", "Conveyor starts and run feedback is confirmed"],
+      ["CV-T02", "Activate emergency stop", "Motor output drops and restart is inhibited"],
+      ["CV-T03", "Pass an object sensor target", "Counter increments once per detected object"]
+    ],
+    faults: [
+      ["CV-FF01", "Conveyor motor will not start", "Run command present but motor feedback remains off", "Check mode, E-stop, overload, output command and feedback path"],
+      ["CV-FF02", "Product count is incorrect", "Count is missed or increments more than once", "Check sensor state, edge detection, scan logic and counter reset"]
+    ]
+  },
+  "project-tank": {
+    name: "Automated Tank / Filling System",
+    description: "A process-control simulation for filling, monitoring and discharging a tank. It combines analog level, pressure, temperature and flow values with pump and valve control, alarm thresholds, permissives and safe shutdown logic.",
+    tests: [
+      ["TK-T01", "Run automatic fill sequence", "Inlet opens and closes at the defined level setpoint"],
+      ["TK-T02", "Simulate high-high level", "Inflow stops and high-high alarm is latched"],
+      ["TK-T03", "Simulate loss of level signal", "Signal fault is shown and automatic operation is inhibited"]
+    ],
+    faults: [
+      ["TK-FF01", "Tank does not stop filling", "Level rises beyond the normal stop setpoint", "Check scaled level, setpoint comparison, valve command and feedback"],
+      ["TK-FF02", "Pump will not start", "Start request is active but pump command remains off", "Check low-level inhibit, overload, E-stop, mode and discharge path"]
+    ]
+  },
+  "project-scada": {
+    name: "SCADA Process Control System",
+    description: "An operator-interface and communications project focused on clear process status, alarm handling, trends, modes and PLC data quality. It demonstrates how control data is presented without transferring safety responsibility to the HMI.",
+    tests: [
+      ["SC-T01", "Verify PLC tag updates", "Values and equipment states refresh correctly on the HMI"],
+      ["SC-T02", "Trigger a configured alarm", "Alarm appears with priority, timestamp and acknowledgement state"],
+      ["SC-T03", "Interrupt communications", "Bad quality is shown and stale commands are prevented"]
+    ],
+    faults: [
+      ["SC-FF01", "SCADA values are stale", "Values stop updating while the screen remains available", "Check PLC availability, network path, driver session and tag quality"],
+      ["SC-FF02", "Alarm is not displayed", "PLC alarm condition is active but no HMI alarm appears", "Check alarm expression, tag mapping, enabled state and priority filters"]
+    ]
+  },
+  "project-water": {
+    name: "Automated Water Treatment Plant",
+    description: "A flagship training simulation connecting raw-water intake, treatment, filtration, storage and monitored output. It brings PLC sequencing, instrumentation, SCADA, networking, electrical control and diagnostic thinking into one traceable system.",
+    tests: [
+      ["WT-T01", "Run normal treatment sequence", "Each stage advances only when its permissives are satisfied"],
+      ["WT-T02", "Simulate pump overload", "Pump stops, alarm latches and dependent stages hold safely"],
+      ["WT-T03", "Simulate invalid transmitter signal", "Bad signal is identified and affected control is inhibited"]
+    ],
+    faults: [
+      ["WT-FF01", "Treatment pump will not start", "Sequence requests the pump but no run feedback is received", "Trace permissives, PLC output, overload state and motor feedback"],
+      ["WT-FF02", "Outlet flow reading is incorrect", "Displayed flow differs from the simulated reference", "Check raw value, input range, engineering-unit scaling and HMI tag"]
+    ]
+  }
+};
 
-    code.textContent = documentType.code;
-    title.textContent = documentType.title;
-    purpose.textContent = `Purpose: ${documentType.purpose}`;
-    meta.textContent = `Project: ${projectName} · Version: [VERSION] · Date: [DATE]`;
-    button.className = "preview-button";
-    button.type = "button";
-    button.textContent = "View Document";
-    button.dataset.preview = documentType.placeholder;
-    button.dataset.caption = `${projectName}: ${documentType.caption}`;
-
-    details.append(title, purpose, meta);
-    card.append(code, details, button);
-    grid?.append(card);
-  });
-});
-
-const documentationTabs = [...document.querySelectorAll("[data-doc-tab]")];
-const documentationPanels = [...document.querySelectorAll("[data-doc-panel]")];
-
-function activateDocumentationTab(projectId, moveFocus = false) {
-  const selectedTab = documentationTabs.find((tab) => tab.dataset.docTab === projectId);
-  if (!selectedTab) return;
-
-  documentationTabs.forEach((tab) => {
-    const isSelected = tab === selectedTab;
-    tab.setAttribute("aria-selected", String(isSelected));
-    tab.tabIndex = isSelected ? 0 : -1;
-  });
-
-  documentationPanels.forEach((panel) => {
-    panel.hidden = panel.dataset.docPanel !== projectId;
-  });
-
-  if (moveFocus) selectedTab.focus({ preventScroll: true });
+function projectSectionHeading(index, title, note) {
+  return `<div class="project-subheading"><span>${String(index).padStart(2, "0")}</span><div><h4>${title}</h4><p>${note}</p></div></div>`;
 }
 
-documentationTabs.forEach((tab, index) => {
-  tab.addEventListener("click", () => activateDocumentationTab(tab.dataset.docTab));
-  tab.addEventListener("keydown", (event) => {
-    let nextIndex;
-    if (event.key === "ArrowRight") nextIndex = (index + 1) % documentationTabs.length;
-    if (event.key === "ArrowLeft") nextIndex = (index - 1 + documentationTabs.length) % documentationTabs.length;
-    if (event.key === "Home") nextIndex = 0;
-    if (event.key === "End") nextIndex = documentationTabs.length - 1;
-    if (nextIndex === undefined) return;
-    event.preventDefault();
-    activateDocumentationTab(documentationTabs[nextIndex].dataset.docTab, true);
-  });
-});
+Object.entries(projectProfiles).forEach(([projectId, profile]) => {
+  const details = document.getElementById(projectId);
+  if (!details) return;
 
-document.querySelectorAll(".project-document-link").forEach((link) => {
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    activateDocumentationTab(link.dataset.docProject);
-    document.getElementById("documentation")?.scrollIntoView({
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "start"
-    });
-  });
+  const evidenceCards = evidenceTypes.map((item) => `
+    <article>
+      <span>${item.code}</span>
+      <h4>[${item.title.toUpperCase()}]</h4>
+      <p>${item.note}</p>
+      <button class="preview-button" type="button" data-preview="[${item.title.toUpperCase()}]" data-caption="${profile.name}: ${item.note}">Preview placeholder</button>
+    </article>`).join("");
+
+  const testRows = profile.tests.map(([id, test, expected]) => `
+    <tr><td>${id}</td><td>${test}</td><td>${expected}</td><td>[ADD ACTUAL RESULT]</td><td><span class="status not-tested">NOT TESTED</span></td></tr>`).join("");
+
+  const faultCards = profile.faults.map(([id, title, symptom, checks]) => `
+    <article class="fault-card compact-fault">
+      <div class="fault-head"><span>${id}</span><h3>${title}</h3><b>FAULT FINDING</b></div>
+      <dl>
+        <div><dt>Symptoms</dt><dd>${symptom}</dd></div>
+        <div><dt>Checks</dt><dd>${checks}</dd></div>
+        <div><dt>Root cause</dt><dd>[ADD CONFIRMED ROOT CAUSE]</dd></div>
+        <div><dt>Action</dt><dd>[ADD CORRECTIVE ACTION]</dd></div>
+        <div><dt>Verification</dt><dd>[ADD RETEST RESULT AND EVIDENCE]</dd></div>
+      </dl>
+    </article>`).join("");
+
+  const documentCards = documentationTypes.map((item) => `
+    <article>
+      <span>${item.code}</span>
+      <div><h3>${item.title}</h3><p>${item.purpose}</p><small>Version: [VERSION] · Date: [DATE]</small></div>
+      <button class="preview-button" type="button" data-preview="${item.placeholder}" data-caption="${profile.name}: ${item.caption}">Add document</button>
+    </article>`).join("");
+
+  details.innerHTML = `
+    <section class="project-block project-description" aria-label="Project description">
+      ${projectSectionHeading(1, "Project description", "Scope and control objective")}
+      <p>${profile.description}</p>
+    </section>
+    <section class="project-block" aria-label="Project evidence">
+      ${projectSectionHeading(2, "Evidence", "Add authentic project files as the work is completed")}
+      <div class="evidence-gallery">${evidenceCards}</div>
+    </section>
+    <section class="project-block" aria-label="Project testing">
+      ${projectSectionHeading(3, "Testing", "Expected and actual results kept together")}
+      <div class="io-wrap"><div class="testing-table-card"><table><caption>${profile.name} — Functional Test Record</caption><thead><tr><th>Test ID</th><th>Test</th><th>Expected result</th><th>Actual result</th><th>Status</th></tr></thead><tbody>${testRows}</tbody></table></div></div>
+    </section>
+    <section class="project-block project-troubleshooting" aria-label="Project troubleshooting">
+      ${projectSectionHeading(4, "Fault-finding &amp; troubleshooting", "Two structured diagnostic records for this project")}
+      <div class="fault-grid">${faultCards}</div>
+    </section>
+    <section class="project-block project-documentation" aria-label="Project documentation">
+      ${projectSectionHeading(5, "Documentation", "Controlled engineering records for design, testing and maintenance")}
+      <div class="document-grid">${documentCards}</div>
+    </section>
+    <div class="project-repository"><p>Keep source files, revisions and supporting evidence together in the project repository.</p><a class="button button-primary placeholder-link" href="https://github.com/your-username" target="_blank" rel="noreferrer">View project on GitHub <span aria-hidden="true">↗</span></a></div>`;
 });
 
 document.querySelector('.footer-links a[href="#top"]')?.addEventListener("click", (event) => {
