@@ -19,7 +19,7 @@ Open `index.html` directly in a browser, or serve the `portfolio` directory with
 1. Hero
 2. About
 3. Technical Skills
-4. Project Case Studies (evidence, testing, troubleshooting, documentation)
+4. Project Case Studies (evidence, testing, troubleshooting, documentation, video documentation)
 5. Experience & Education
 6. Contact
 

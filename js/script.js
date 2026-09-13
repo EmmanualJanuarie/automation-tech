@@ -83,6 +83,12 @@ const evidenceTypes = [
   { code: "ELECTRICAL", title: "Add electrical schematic", note: "Power, protection, control and field connections." }
 ];
 
+const videoTypes = [
+  { code: "VIDEO 01", title: "Build overview", note: "Walk through the equipment, layout, wiring and main project components." },
+  { code: "VIDEO 02", title: "Control demonstration", note: "Record a normal operating sequence, PLC logic and HMI or SCADA response." },
+  { code: "VIDEO 03", title: "Testing & troubleshooting", note: "Show a functional test, simulated fault, diagnosis and verified recovery." }
+];
+
 const projectProfiles = {
   "project-conveyor": {
     name: "Automated Conveyor System",
@@ -176,6 +182,17 @@ Object.entries(projectProfiles).forEach(([projectId, profile]) => {
       <button class="preview-button" type="button" data-preview="${item.placeholder}" data-caption="${profile.name}: ${item.caption}">Add document</button>
     </article>`).join("");
 
+  const videoCards = videoTypes.map((item) => `
+    <article class="video-card">
+      <div class="video-frame">
+        <video controls preload="metadata" hidden aria-label="${profile.name}: ${item.title}"></video>
+        <div class="video-empty"><span aria-hidden="true">▶</span><small>${item.code}</small></div>
+      </div>
+      <div class="video-card-copy"><span>${item.code}</span><h3>${item.title}</h3><p>${item.note}</p></div>
+      <label class="video-upload-button">Choose video<input class="video-input" type="file" accept="video/*"></label>
+      <p class="video-file-name" aria-live="polite">No video selected</p>
+    </article>`).join("");
+
   details.innerHTML = `
     <section class="project-block project-description" aria-label="Project description">
       ${projectSectionHeading(1, "Project description", "Scope and control objective")}
@@ -197,7 +214,30 @@ Object.entries(projectProfiles).forEach(([projectId, profile]) => {
       ${projectSectionHeading(5, "Documentation", "Controlled engineering records for design, testing and maintenance")}
       <div class="document-grid">${documentCards}</div>
     </section>
+    <section class="project-block project-video-documentation" aria-label="Project video documentation">
+      ${projectSectionHeading(6, "Video documentation", "Add recordings of the project build, operation and test results")}
+      <div class="video-grid">${videoCards}</div>
+    </section>
     <div class="project-repository"><p>Keep source files, revisions and supporting evidence together in the project repository.</p><a class="button button-primary placeholder-link" href="https://github.com/your-username" target="_blank" rel="noreferrer">View project on GitHub <span aria-hidden="true">↗</span></a></div>`;
+});
+
+document.querySelectorAll(".video-input").forEach((input) => {
+  input.addEventListener("change", () => {
+    const card = input.closest(".video-card");
+    const video = card?.querySelector("video");
+    const emptyState = card?.querySelector(".video-empty");
+    const fileName = card?.querySelector(".video-file-name");
+    const file = input.files?.[0];
+    if (!video || !file) return;
+
+    if (video.dataset.objectUrl) URL.revokeObjectURL(video.dataset.objectUrl);
+    const objectUrl = URL.createObjectURL(file);
+    video.dataset.objectUrl = objectUrl;
+    video.src = objectUrl;
+    video.hidden = false;
+    if (emptyState) emptyState.hidden = true;
+    if (fileName) fileName.textContent = file.name;
+  });
 });
 
 document.querySelector('.footer-links a[href="#top"]')?.addEventListener("click", (event) => {
