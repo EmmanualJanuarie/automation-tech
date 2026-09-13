@@ -130,6 +130,7 @@ h1 span { display: block; margin-bottom: 17px; color: var(--muted); font: 500 cl
 .project-labels { display: flex; flex-wrap: wrap; gap: 7px; }
 .project-labels span { color: var(--cyan); font: 500 .53rem "IBM Plex Mono", monospace; letter-spacing: .07em; }
 .project-labels span + span { color: var(--faint); }
+.project-labels .video-label { color: var(--amber); }
 .project h3 { margin: 8px 0; font-size: clamp(1.35rem, 2.5vw, 2rem); letter-spacing: -.025em; }
 .project-summary p { max-width: 820px; margin: 0; color: var(--muted); font-size: .9rem; }
 .project-toggle { min-width: 120px; padding: 10px 12px; border: 1px solid var(--line-bright); background: transparent; color: var(--ink); cursor: pointer; font: .62rem "IBM Plex Mono", monospace; }
