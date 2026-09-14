@@ -83,16 +83,9 @@ const evidenceTypes = [
   { code: "ELECTRICAL", title: "Add electrical schematic", note: "Power, protection, control and field connections." }
 ];
 
-const videoTypes = [
-  { code: "VIDEO 01", fileName: "build-overview.mp4", title: "Build overview", note: "Walk through the equipment, layout, wiring and main project components." },
-  { code: "VIDEO 02", fileName: "control-demonstration.mp4", title: "Control demonstration", note: "Record a normal operating sequence, PLC logic and HMI or SCADA response." },
-  { code: "VIDEO 03", fileName: "testing-troubleshooting.mp4", title: "Testing & troubleshooting", note: "Show a functional test, simulated fault, diagnosis and verified recovery." }
-];
-
 const projectProfiles = {
   "project-conveyor": {
     name: "Automated Conveyor System",
-    videoFolder: "automated-conveyor-system",
     description: "A discrete-control training project for safe conveyor operation, product detection and counting. The design covers Start/Stop priority, operating modes, motor interlocks, feedback monitoring and controlled fault recovery.",
     tests: [
       ["CV-T01", "Start with all permissives healthy", "Conveyor starts and run feedback is confirmed"],
@@ -106,7 +99,6 @@ const projectProfiles = {
   },
   "project-tank": {
     name: "Automated Tank / Filling System",
-    videoFolder: "automated-tank-filling-system",
     description: "A process-control simulation for filling, monitoring and discharging a tank. It combines analog level, pressure, temperature and flow values with pump and valve control, alarm thresholds, permissives and safe shutdown logic.",
     tests: [
       ["TK-T01", "Run automatic fill sequence", "Inlet opens and closes at the defined level setpoint"],
@@ -120,7 +112,6 @@ const projectProfiles = {
   },
   "project-scada": {
     name: "SCADA Process Control System",
-    videoFolder: "scada-process-control-system",
     description: "An operator-interface and communications project focused on clear process status, alarm handling, trends, modes and PLC data quality. It demonstrates how control data is presented without transferring safety responsibility to the HMI.",
     tests: [
       ["SC-T01", "Verify PLC tag updates", "Values and equipment states refresh correctly on the HMI"],
@@ -134,7 +125,6 @@ const projectProfiles = {
   },
   "project-water": {
     name: "Automated Water Treatment Plant",
-    videoFolder: "automated-water-treatment-plant",
     description: "A flagship training simulation connecting raw-water intake, treatment, filtration, storage and monitored output. It brings PLC sequencing, instrumentation, SCADA, networking, electrical control and diagnostic thinking into one traceable system.",
     tests: [
       ["WT-T01", "Run normal treatment sequence", "Each stage advances only when its permissives are satisfied"],
@@ -155,11 +145,6 @@ function projectSectionHeading(index, title, note) {
 Object.entries(projectProfiles).forEach(([projectId, profile]) => {
   const details = document.getElementById(projectId);
   if (!details) return;
-
-  const projectLabels = details.closest(".project")?.querySelector(".project-labels");
-  if (projectLabels && !projectLabels.querySelector(".video-label")) {
-    projectLabels.insertAdjacentHTML("beforeend", '<span class="video-label">VIDEO DOCUMENTATION</span>');
-  }
 
   const evidenceCards = evidenceTypes.map((item) => `
     <article>
@@ -191,22 +176,6 @@ Object.entries(projectProfiles).forEach(([projectId, profile]) => {
       <button class="preview-button" type="button" data-preview="${item.placeholder}" data-caption="${profile.name}: ${item.caption}">Add document</button>
     </article>`).join("");
 
-  // Add each MP4 at: assets/videos/<project folder>/<file name>
-  const videoCards = videoTypes.map((item) => {
-    const videoPath = `assets/videos/${profile.videoFolder}/${item.fileName}`;
-    return `
-    <article class="video-card" data-video-path="${videoPath}">
-      <div class="video-frame">
-        <video controls preload="metadata" aria-label="${profile.name}: ${item.title}">
-          <source src="${videoPath}" type="video/mp4">
-        </video>
-        <div class="video-empty"><span aria-hidden="true">▶</span><small>${item.code}</small></div>
-      </div>
-      <div class="video-card-copy"><span>${item.code}</span><h3>${item.title}</h3><p>${item.note}</p></div>
-      <code class="video-path">${videoPath}</code>
-    </article>`;
-  }).join("");
-
   details.innerHTML = `
     <section class="project-block project-description" aria-label="Project description">
       ${projectSectionHeading(1, "Project description", "Scope and control objective")}
@@ -216,31 +185,19 @@ Object.entries(projectProfiles).forEach(([projectId, profile]) => {
       ${projectSectionHeading(2, "Evidence", "Add authentic project files as the work is completed")}
       <div class="evidence-gallery">${evidenceCards}</div>
     </section>
-    <section class="project-block project-video-documentation" aria-label="Project video documentation">
-      ${projectSectionHeading(3, "Video documentation", "Add recordings of the project build, operation and test results")}
-      <div class="video-grid">${videoCards}</div>
-    </section>
     <section class="project-block" aria-label="Project testing">
-      ${projectSectionHeading(4, "Testing", "Expected and actual results kept together")}
+      ${projectSectionHeading(3, "Testing", "Expected and actual results kept together")}
       <div class="io-wrap"><div class="testing-table-card"><table><caption>${profile.name} — Functional Test Record</caption><thead><tr><th>Test ID</th><th>Test</th><th>Expected result</th><th>Actual result</th><th>Status</th></tr></thead><tbody>${testRows}</tbody></table></div></div>
     </section>
     <section class="project-block project-troubleshooting" aria-label="Project troubleshooting">
-      ${projectSectionHeading(5, "Fault-finding &amp; troubleshooting", "Two structured diagnostic records for this project")}
+      ${projectSectionHeading(4, "Fault-finding &amp; troubleshooting", "Two structured diagnostic records for this project")}
       <div class="fault-grid">${faultCards}</div>
     </section>
     <section class="project-block project-documentation" aria-label="Project documentation">
-      ${projectSectionHeading(6, "Documentation", "Controlled engineering records for design, testing and maintenance")}
+      ${projectSectionHeading(5, "Documentation", "Controlled engineering records for design, testing and maintenance")}
       <div class="document-grid">${documentCards}</div>
     </section>
     <div class="project-repository"><p>Keep source files, revisions and supporting evidence together in the project repository.</p><a class="button button-primary placeholder-link" href="https://github.com/your-username" target="_blank" rel="noreferrer">View project on GitHub <span aria-hidden="true">↗</span></a></div>`;
-});
-
-document.querySelectorAll(".video-card").forEach((card) => {
-  const video = card.querySelector("video");
-  if (!video) return;
-  const showVideo = () => card.classList.add("has-video");
-  if (video.readyState >= 1) showVideo();
-  video.addEventListener("loadedmetadata", showVideo, { once: true });
 });
 
 document.querySelector('.footer-links a[href="#top"]')?.addEventListener("click", (event) => {
