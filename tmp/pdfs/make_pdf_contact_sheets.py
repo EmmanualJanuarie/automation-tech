@@ -25,3 +25,4 @@ def make(folder: str, output_prefix: str):
 make("syllabus_new", "syllabus-new-contact")
 make("portfolio_new", "portfolio-new-contact")
 make("guide_new", "guide-new-contact")
+make("portfolio_simulated_four", "portfolio-simulated-four-contact")
